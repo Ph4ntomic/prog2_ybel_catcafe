@@ -1,38 +1,36 @@
-    @'
 name: CI
 
 on:
-  push:
-    branches:
-      - master
-  pull_request:
-    branches:
-      - master
+    push:
+        branches:
+            - master
+    pull_request:
+        branches:
+            - master
 
 jobs:
-  build-test-format:
-    runs-on: ubuntu-latest
+    build-test-format:
+        runs-on: ubuntu-latest
 
-    steps:
-      - name: Repository auschecken
-        uses: actions/checkout@v4
+        steps:
+            - name: Repository auschecken
+              uses: actions/checkout@v4
 
-      - name: Java einrichten
-        uses: actions/setup-java@v4
-        with:
-          distribution: temurin
-          java-version: '25'
-    cache: gradle
+            - name: Java einrichten
+              uses: actions/setup-java@v4
+              with:
+                  distribution: temurin
+                  java-version: '25'
+                  cache: gradle
 
-    - name: Gradle Wrapper ausfuehrbar machen
-      run: chmod +x ./gradlew
+            - name: Gradle Wrapper ausführbar machen
+              run: chmod +x ./gradlew
 
-    - name: Projekt bauen
-      run: ./gradlew assemble
+            - name: Projekt bauen
+              run: ./gradlew assemble
 
-    - name: JUnit-Tests ausfuehren
-      run: ./gradlew test
+            - name: JUnit-Tests ausführen
+              run: ./gradlew test
 
-    - name: Formatierung pruefen
-      run: ./gradlew spotlessCheck
-        '@ | Set-Content -Path .github\workflows\ci.yml -Encoding UTF8
+            - name: Formatierung prüfen
+              run: ./gradlew spotlessCheck
