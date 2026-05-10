@@ -1,0 +1,38 @@
+name: CI
+
+"on":
+    push:
+        branches:
+            - main
+            - master
+    pull_request:
+        branches:
+            - main
+            - master
+
+jobs:
+    build-test-format:
+        runs-on: ubuntu-latest
+
+        steps:
+            - name: Repository auschecken
+              uses: actions/checkout@v4
+
+            - name: Java einrichten
+              uses: actions/setup-java@v4
+              with:
+                  distribution: temurin
+                  java-version: '25'
+                  cache: gradle
+
+            - name: Gradle Wrapper ausführbar machen
+              run: chmod +x ./gradlew
+
+            - name: Projekt bauen
+              run: ./gradlew assemble
+
+            - name: JUnit-Tests ausführen
+              run: ./gradlew test
+
+            - name: Formatierung prüfen
+              run: ./gradlew spotlessCheck
